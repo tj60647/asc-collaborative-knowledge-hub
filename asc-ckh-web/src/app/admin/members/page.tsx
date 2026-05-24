@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/table"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import Link from "next/link"
 
 const mockMembers = [
@@ -22,9 +22,9 @@ export default function MembersReportPage() {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold tracking-tight">Membership Roster</h2>
-        <Button asChild>
-          <Link href="/admin/members/new">Add Member</Link>
-        </Button>
+        <Link href="/admin/members/new" className={buttonVariants()}>
+          Add Member
+        </Link>
       </div>
       
       <Card>

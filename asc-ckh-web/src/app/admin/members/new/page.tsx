@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -74,9 +74,12 @@ export default function NewMemberPage() {
           </div>
         </CardContent>
         <CardFooter className="justify-between space-x-2">
-          <Button variant="ghost" asChild>
-            <Link href="/admin/members">Cancel</Link>
-          </Button>
+          <Link
+            href="/admin/members"
+            className={buttonVariants({ variant: "ghost" })}
+          >
+            Cancel
+          </Link>
           <Button>Provision Account</Button>
         </CardFooter>
       </Card>

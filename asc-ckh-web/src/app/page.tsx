@@ -3,138 +3,136 @@ import { ArrowRight, BookOpen, Network, ShieldCheck, TrendingUp, UserPlus } from
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-between bg-zinc-950 text-zinc-50 overflow-hidden font-sans">
-      {/* Decorative background grid and gradients */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293710_1px,transparent_1px),linear-gradient(to_bottom,#1f293710_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
-      
-      {/* Glowing radial feedback loop spheres */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none animate-pulse" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none animate-pulse" />
-
-      {/* Header / Navigation */}
-      <header className="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between border-b border-zinc-900 backdrop-blur-md bg-zinc-950/50 z-10">
-        <div className="flex items-center space-x-3">
-          <div className="h-9 w-9 rounded-lg bg-gradient-to-tr from-indigo-500 via-purple-500 to-cyan-500 p-[1.5px] shadow-lg shadow-indigo-500/20">
-            <div className="h-full w-full rounded-md bg-zinc-950 flex items-center justify-center font-bold tracking-wider text-xs">
+    <div className="min-h-screen flex flex-col items-center justify-between bg-white text-zinc-900 font-sans antialiased">
+      {/* Crisp minimalist border dividers */}
+      <div className="w-full border-b border-zinc-100 bg-white/80 backdrop-blur-md sticky top-0 z-50">
+        <header className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <span className="text-xs font-bold tracking-widest text-zinc-950 uppercase border border-zinc-950 px-2 py-0.5">
               ASC
-            </div>
+            </span>
+            <span className="text-xs font-medium tracking-wide text-zinc-500 hidden sm:inline">
+              American Society for Cybernetics
+            </span>
           </div>
-          <span className="font-semibold tracking-tight text-sm text-zinc-300">American Society for Cybernetics</span>
-        </div>
-        <nav className="flex items-center space-x-4">
-          <Link
-            href="/admin"
-            className="text-xs font-medium text-zinc-400 hover:text-zinc-50 transition-colors"
-          >
-            Admin Portal
-          </Link>
-          <Link
-            href="/admin"
-            className="text-xs font-medium bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 px-3.5 py-1.5 rounded-lg transition-all"
-          >
-            Sign In
-          </Link>
-        </nav>
-      </header>
-
-      {/* Hero Section */}
-      <main className="w-full max-w-7xl mx-auto px-6 flex-1 flex flex-col justify-center items-center py-20 z-10">
-        <div className="text-center max-w-3xl flex flex-col items-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs text-indigo-400 font-medium mb-8 backdrop-blur-sm animate-fade-in">
-            <span className="flex h-1.5 w-1.5 rounded-full bg-indigo-400 animate-ping" />
-            Active Ecosystem Development
-          </div>
-
-          {/* Main Heading */}
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white via-zinc-100 to-zinc-400 mb-6 max-w-2xl leading-[1.1]">
-            The Collaborative Knowledge Hub
-          </h1>
-
-          {/* Subtitle */}
-          <p className="text-base sm:text-lg text-zinc-400 mb-10 max-w-xl leading-relaxed">
-            Co-creating the digital architecture for systems theory, historical archives, and relational cybernetic inquiry.
-          </p>
-
-          {/* Interactive CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 w-full justify-center max-w-sm mb-16">
+          <nav className="flex items-center space-x-6">
             <Link
               href="/admin"
-              className="group inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 px-6 font-medium text-sm text-black hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-indigo-500/20"
+              className="text-xs tracking-wide text-zinc-500 hover:text-zinc-950 transition-colors"
+            >
+              Roster
+            </Link>
+            <Link
+              href="/admin"
+              className="text-xs tracking-wide text-zinc-500 hover:text-zinc-950 transition-colors"
+            >
+              Treasury
+            </Link>
+            <Link
+              href="/admin"
+              className="text-xs font-semibold tracking-wide bg-zinc-950 text-white hover:bg-zinc-800 px-4 py-2 rounded-none transition-colors"
+            >
+              Sign In
+            </Link>
+          </nav>
+        </header>
+      </div>
+
+      {/* Hero / Information Architecture */}
+      <main className="w-full max-w-6xl mx-auto px-6 flex-1 flex flex-col justify-center py-20">
+        <div className="max-w-3xl mb-16">
+          <p className="text-xs font-bold tracking-widest text-zinc-400 uppercase mb-4">
+            Ecosystem MVP &middot; Phase 2
+          </p>
+          <h1 className="text-4xl sm:text-5xl font-light tracking-tight text-zinc-950 mb-6 leading-tight">
+            Collaborative Knowledge Hub
+          </h1>
+          <p className="text-lg text-zinc-600 font-light max-w-2xl leading-relaxed mb-8">
+            An open, peer-governed digital ecosystem for systems theory, historical archives, and relational cybernetic inquiry.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link
+              href="/admin"
+              className="group inline-flex h-10 items-center justify-center gap-2 bg-zinc-950 px-6 font-medium text-xs text-white hover:bg-zinc-800 transition-colors"
             >
               Enter Dashboard
-              <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight className="size-3.5 group-hover:translate-x-0.5 transition-transform" />
             </Link>
             <Link
               href="/admin/members/new"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/60 hover:bg-zinc-800 hover:border-zinc-700 px-6 font-medium text-sm text-zinc-300 hover:text-white transition-all backdrop-blur-sm"
+              className="inline-flex h-10 items-center justify-center gap-2 border border-zinc-200 bg-white hover:bg-zinc-50 px-6 font-medium text-xs text-zinc-800 transition-colors"
             >
-              <UserPlus className="size-4" />
-              Provision Account
+              <UserPlus className="size-3.5" />
+              Manual Provisioning
             </Link>
           </div>
         </div>
 
-        {/* Feature Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full mt-8">
-          {/* Card 1: Glossary */}
-          <div className="group relative rounded-2xl border border-zinc-900 bg-zinc-950/40 p-6 backdrop-blur-sm hover:border-zinc-800 transition-all hover:bg-zinc-950/60">
-            <div className="absolute top-0 right-0 h-[80px] w-[80px] bg-indigo-500/5 rounded-bl-full group-hover:bg-indigo-500/10 transition-colors pointer-events-none" />
-            <div className="h-10 w-10 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 mb-5">
-              <BookOpen className="size-5" />
+        {/* Modular Grid with Clean Border Styling */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-t border-l border-zinc-150">
+          {/* Card 1 */}
+          <div className="border-r border-b border-zinc-150 p-8 flex flex-col justify-between hover:bg-zinc-50/50 transition-colors group">
+            <div>
+              <div className="text-zinc-400 group-hover:text-zinc-950 transition-colors mb-6">
+                <BookOpen className="size-5 stroke-[1.5]" />
+              </div>
+              <h3 className="text-sm font-semibold text-zinc-950 mb-2">Archival Glossary</h3>
+              <p className="text-xs text-zinc-500 leading-relaxed">
+                Curated definitions of core systemic concepts with version logs and peer-governed workflows.
+              </p>
             </div>
-            <h3 className="font-semibold text-zinc-200 mb-2">Archival Glossary</h3>
-            <p className="text-sm text-zinc-400 leading-relaxed">
-              Curated definitions of core systemic concepts with version logs and peer-governed workflows.
-            </p>
           </div>
 
-          {/* Card 2: Knowledge Graph */}
-          <div className="group relative rounded-2xl border border-zinc-900 bg-zinc-950/40 p-6 backdrop-blur-sm hover:border-zinc-800 transition-all hover:bg-zinc-950/60">
-            <div className="absolute top-0 right-0 h-[80px] w-[80px] bg-cyan-500/5 rounded-bl-full group-hover:bg-cyan-500/10 transition-colors pointer-events-none" />
-            <div className="h-10 w-10 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 mb-5">
-              <Network className="size-5" />
+          {/* Card 2 */}
+          <div className="border-r border-b border-zinc-150 p-8 flex flex-col justify-between hover:bg-zinc-50/50 transition-colors group">
+            <div>
+              <div className="text-zinc-400 group-hover:text-zinc-950 transition-colors mb-6">
+                <Network className="size-5 stroke-[1.5]" />
+              </div>
+              <h3 className="text-sm font-semibold text-zinc-950 mb-2">Relational Graph</h3>
+              <p className="text-xs text-zinc-500 leading-relaxed">
+                Interconnected map of researchers, academic chapters, publications, and conceptual links.
+              </p>
             </div>
-            <h3 className="font-semibold text-zinc-200 mb-2">Relational Graph</h3>
-            <p className="text-sm text-zinc-400 leading-relaxed">
-              Interconnected map of researchers, academic chapters, publications, and conceptual links.
-            </p>
           </div>
 
-          {/* Card 3: Privacy Boundaries */}
-          <div className="group relative rounded-2xl border border-zinc-900 bg-zinc-950/40 p-6 backdrop-blur-sm hover:border-zinc-800 transition-all hover:bg-zinc-950/60">
-            <div className="absolute top-0 right-0 h-[80px] w-[80px] bg-emerald-500/5 rounded-bl-full group-hover:bg-emerald-500/10 transition-colors pointer-events-none" />
-            <div className="h-10 w-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-5">
-              <ShieldCheck className="size-5" />
+          {/* Card 3 */}
+          <div className="border-r border-b border-zinc-150 p-8 flex flex-col justify-between hover:bg-zinc-50/50 transition-colors group">
+            <div>
+              <div className="text-zinc-400 group-hover:text-zinc-950 transition-colors mb-6">
+                <ShieldCheck className="size-5 stroke-[1.5]" />
+              </div>
+              <h3 className="text-sm font-semibold text-zinc-950 mb-2">Sovereign Privacy</h3>
+              <p className="text-xs text-zinc-500 leading-relaxed">
+                Hardcoded database restrictions and explicit GDPR/CCPA opt-in rules for secure membership.
+              </p>
             </div>
-            <h3 className="font-semibold text-zinc-200 mb-2">Sovereign Privacy</h3>
-            <p className="text-sm text-zinc-400 leading-relaxed">
-              Hardcoded database restrictions and explicit GDPR/CCPA opt-in rules for secure membership.
-            </p>
           </div>
 
-          {/* Card 4: Operations Ledger */}
-          <div className="group relative rounded-2xl border border-zinc-900 bg-zinc-950/40 p-6 backdrop-blur-sm hover:border-zinc-800 transition-all hover:bg-zinc-950/60">
-            <div className="absolute top-0 right-0 h-[80px] w-[80px] bg-amber-500/5 rounded-bl-full group-hover:bg-amber-500/10 transition-colors pointer-events-none" />
-            <div className="h-10 w-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-5">
-              <TrendingUp className="size-5" />
+          {/* Card 4 */}
+          <div className="border-r border-b border-zinc-150 p-8 flex flex-col justify-between hover:bg-zinc-50/50 transition-colors group">
+            <div>
+              <div className="text-zinc-400 group-hover:text-zinc-950 transition-colors mb-6">
+                <TrendingUp className="size-5 stroke-[1.5]" />
+              </div>
+              <h3 className="text-sm font-semibold text-zinc-950 mb-2">Transparent Treasury</h3>
+              <p className="text-xs text-zinc-500 leading-relaxed">
+                Real-time balance reporting and transaction auditing for the society's volunteer leadership.
+              </p>
             </div>
-            <h3 className="font-semibold text-zinc-200 mb-2">Transparent Treasury</h3>
-            <p className="text-sm text-zinc-400 leading-relaxed">
-              Real-time balance reporting and transaction auditing for the society's volunteer leadership.
-            </p>
           </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="w-full max-w-7xl mx-auto px-6 py-8 border-t border-zinc-900 z-10 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 gap-4">
+      <footer className="w-full max-w-6xl mx-auto px-6 py-8 border-t border-zinc-100 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-400 gap-4">
         <div>
-          &copy; {new Date().getFullYear()} American Society for Cybernetics. All rights reserved.
+          &copy; {new Date().getFullYear()} American Society for Cybernetics.
         </div>
         <div className="flex items-center space-x-6">
-          <span className="hover:text-zinc-300 cursor-default transition-colors">GDPR Compliant</span>
-          <span className="hover:text-zinc-300 cursor-default transition-colors">Open-Source Core</span>
+          <span className="cursor-default hover:text-zinc-600 transition-colors">GDPR Compliant</span>
+          <span className="cursor-default hover:text-zinc-600 transition-colors">Open-Source Core</span>
         </div>
       </footer>
     </div>

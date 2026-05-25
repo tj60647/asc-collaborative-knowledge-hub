@@ -6,6 +6,8 @@ CREATE TYPE public.resource_type AS ENUM ('glossary_term', 'publication', 'event
 CREATE TYPE public.resource_status AS ENUM ('draft', 'review', 'published');
 CREATE TYPE public.provenance_type AS ENUM ('declared', 'curated', 'behavioral');
 
+CREATE TYPE public.report_status AS ENUM ('pending', 'resolved', 'dismissed');
+
 -- 2. Profiles Table (Extends auth.users)
 CREATE TABLE public.profiles (
   id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
@@ -66,3 +68,20 @@ CREATE POLICY "Users can update own profile" ON public.profiles
 -- Resources: Viewable if published, or if current user is the author
 CREATE POLICY "Resources are viewable if published or author" ON public.resources
   FOR SELECT USING (status = 'published'::public.resource_status OR auth.uid() = author_id);
+
+-- 7. Moderation Reports Table
+CREATE TABLE public.moderation_reports (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  reporter_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+  resource_id UUID REFERENCES public.resources(id) ON DELETE CASCADE,
+  reason TEXT NOT NULL,
+  status public.report_status DEFAULT 'pending'::public.report_status NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+);
+
+ALTER TABLE public.moderation_reports ENABLE ROW LEVEL SECURITY;
+
+-- Reports: Members can insert reports. Only moderators/admins can view.
+-- (For MVP, we allow authenticated users to insert, but no SELECT policy is provided so standard users cannot read reports).
+CREATE POLICY "Users can submit reports" ON public.moderation_reports
+  FOR INSERT WITH CHECK (auth.uid() = reporter_id);

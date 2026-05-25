@@ -12,33 +12,33 @@ export async function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center mx-auto px-4">
-        <div className="mr-4 hidden md:flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Library className="h-6 w-6 text-primary" />
+      <div className="w-full max-w-7xl mx-auto px-6 flex h-14 items-center">
+        <div className="mr-4 hidden md:flex items-center">
+          <Link href="/" className="mr-6 flex items-center space-x-2 text-zinc-900 dark:text-zinc-50">
+            <Library className="h-6 w-6" />
             <span className="hidden font-bold sm:inline-block">
               ASC Knowledge Hub
             </span>
           </Link>
           <div className="hidden md:flex flex-1 items-center space-x-6 text-sm font-medium">
-          <Link href="/events" className="text-zinc-600 hover:text-zinc-900 transition-colors">
-            Events
-          </Link>
-          <Link href="/directory" className="text-zinc-600 hover:text-zinc-900 transition-colors">
-            Directory
-          </Link>
-          <Link href="/directory/organizations" className="text-zinc-600 hover:text-zinc-900 transition-colors">
-            Organizations
-          </Link>
-          <Link href="/glossary" className="text-zinc-600 hover:text-zinc-900 transition-colors">
-            Glossary
-          </Link>
-        </div>
+            <Link href="/events" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors">
+              Events
+            </Link>
+            <Link href="/directory" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors">
+              Directory
+            </Link>
+            <Link href="/directory/organizations" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors">
+              Organizations
+            </Link>
+            <Link href="/glossary" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors">
+              Glossary
+            </Link>
+          </div>
         </div>
 
         {/* Mobile Logo */}
-        <Link href="/" className="mr-6 flex items-center space-x-2 md:hidden">
-          <Library className="h-6 w-6 text-primary" />
+        <Link href="/" className="mr-6 flex items-center space-x-2 md:hidden text-zinc-900 dark:text-zinc-50">
+          <Library className="h-6 w-6" />
           <span className="font-bold inline-block">ASC</span>
         </Link>
 

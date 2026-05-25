@@ -59,57 +59,29 @@ const saveLocalEvents = (events: any[]) => {
   }
 }
 
-export async function fetchEvents(statusFilter?: 'published' | 'draft') {
+export async function fetchEvents() {
   if (!isMockMode) {
-    let query = supabase.from('community_events').select('*')
-    if (statusFilter) query = query.eq('status', statusFilter)
-    const { data, error } = await query
+    const { data, error } = await supabase.from('events').select('*')
     if (error) throw error
     return data
   } else {
     // Mock Mode
     await new Promise(r => setTimeout(r, 400)) // simulate network
-    const events = getLocalEvents()
-    if (statusFilter) return events.filter((e: any) => e.status === statusFilter)
-    return events
+    return getLocalEvents()
   }
 }
 
 export async function createEvent(eventData: any) {
-  let embedding = null;
-
-  // 1. Generate the embedding via our secure backend route
-  try {
-    const embedRes = await fetch('/api/embed', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(eventData)
-    });
-    
-    if (embedRes.ok) {
-      const data = await embedRes.json();
-      embedding = data.embedding;
-      console.log(`Generated embedding vector of length: ${embedding?.length}`);
-    } else {
-      console.error("Failed to generate embedding", await embedRes.text());
-    }
-  } catch (err) {
-    console.error("Error calling /api/embed:", err);
-  }
-
-  // 2. Attach embedding to payload
-  const payload = { ...eventData, embedding };
-
-  // 3. Save to Database (or mock fallback)
+  // Save to Database (or mock fallback)
   if (!isMockMode) {
-    const { data, error } = await supabase.from('community_events').insert([payload]).select()
+    const { data, error } = await supabase.from('events').insert([eventData]).select()
     if (error) throw error
     return data
   } else {
     // Mock Mode
     await new Promise(r => setTimeout(r, 600))
     const events = getLocalEvents()
-    const newEvent = { ...payload, id: `evt-${Date.now()}` }
+    const newEvent = { ...eventData, id: `evt-${Date.now()}` }
     saveLocalEvents([...events, newEvent])
     return [newEvent]
   }
@@ -117,7 +89,7 @@ export async function createEvent(eventData: any) {
 
 export async function updateEventStatus(id: string, newStatus: string) {
   if (!isMockMode) {
-    const { data, error } = await supabase.from('community_events').update({ status: newStatus }).eq('id', id).select()
+    const { data, error } = await supabase.from('events').update({ status: newStatus }).eq('id', id).select()
     if (error) throw error
     return data
   } else {
@@ -127,5 +99,20 @@ export async function updateEventStatus(id: string, newStatus: string) {
     const updated = events.map((e: any) => e.id === id ? { ...e, status: newStatus } : e)
     saveLocalEvents(updated)
     return updated.filter((e: any) => e.id === id)
+  }
+}
+
+export async function deleteEvent(id: string) {
+  if (!isMockMode) {
+    const { error } = await supabase.from('events').delete().eq('id', id)
+    if (error) throw error
+    return true
+  } else {
+    // Mock Mode
+    await new Promise(r => setTimeout(r, 400))
+    const events = getLocalEvents()
+    const updated = events.filter((e: any) => e.id !== id)
+    saveLocalEvents(updated)
+    return true
   }
 }

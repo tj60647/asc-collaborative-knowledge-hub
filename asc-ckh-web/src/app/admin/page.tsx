@@ -6,31 +6,17 @@ export default function AdminDashboard() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">
-            Active Members
+            Pending Renewals
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">0</div>
           <p className="text-xs text-muted-foreground">
-            Awaiting migration
+            Membership queue clear
           </p>
         </CardContent>
       </Card>
       
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">
-            Pending Glossary Reviews
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">0</div>
-          <p className="text-xs text-muted-foreground">
-            No submissions in queue
-          </p>
-        </CardContent>
-      </Card>
-
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">
@@ -40,7 +26,21 @@ export default function AdminDashboard() {
         <CardContent>
           <div className="text-2xl font-bold">0</div>
           <p className="text-xs text-muted-foreground">
-            Community safety queue clear
+            Moderation queue clear
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">
+            Orphaned Nodes
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">12</div>
+          <p className="text-xs text-muted-foreground">
+            Requires data curation
           </p>
         </CardContent>
       </Card>

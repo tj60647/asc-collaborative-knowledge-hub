@@ -1,107 +1,82 @@
-import { createClient } from '@/utils/supabase/server'
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card"
-import { Shield, CheckCircle2, XCircle, MessageCircleQuestion } from "lucide-react"
-import { ModerationList } from './moderation-list'
-import { redirect } from 'next/navigation'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Badge } from "@/components/ui/badge"
 
-export const metadata = {
-  title: 'Moderation Dashboard | ASC Admin',
-}
-
-export default async function ModerationDashboard() {
-  const supabase = await createClient()
-
-  // 1. Check permissions
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) {
-    redirect('/auth/login')
+const mockQueue = [
+  {
+    id: "PUB-1029",
+    type: "Publication",
+    title: "Cybernetics and the Origins of Information",
+    author: "Alice Scholar",
+    status: "Pending_Review",
+    date: "2026-05-24",
+  },
+  {
+    id: "REP-4011",
+    type: "Report",
+    title: "Inappropriate Comment on Graph Node",
+    author: "System Auto-Flag",
+    status: "Action_Required",
+    date: "2026-05-23",
   }
+]
 
-  const { data: profile } = await supabase
-    .from('user_profiles')
-    .select('role')
-    .eq('id', user.id)
-    .single()
-
-  if (!profile || !['admin', 'moderator'].includes(profile.role)) {
-    redirect('/dashboard') // Or some unauthorized page
-  }
-
-  // 2. Fetch Pending Questions
-  const { data: questions, error } = await supabase
-    .from('expert_questions')
-    .select(`
-      id,
-      question,
-      created_at,
-      status,
-      user_profiles!expert_questions_author_id_fkey (
-        first_name,
-        last_name,
-        title_prefix
-      )
-    `)
-    .eq('status', 'pending')
-    .order('created_at', { ascending: false })
-
-  if (error) {
-    console.error('Error fetching questions:', error)
-  }
-
+export default function ModerationQueuePage() {
   return (
-    <div className="flex flex-col gap-8 max-w-6xl mx-auto py-8 px-4">
-      <div className="flex items-center gap-3">
-        <Shield className="h-8 w-8 text-primary" />
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Moderation Dashboard</h1>
-          <p className="text-muted-foreground">
-            Review and answer questions submitted by members. Filter out inappropriate content.
-          </p>
-        </div>
+    <div className="w-full max-w-6xl mx-auto space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">Moderation Queue</h1>
+        <p className="mt-2 text-zinc-600 dark:text-zinc-400">
+          Review member-submitted publications and investigate community safety reports.
+        </p>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <MessageCircleQuestion className="h-5 w-5" />
-              Pending Questions
-            </CardTitle>
-            <CardDescription>
-              Questions waiting for an expert answer.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {questions && questions.length > 0 ? (
-              <ModerationList questions={questions as any} />
-            ) : (
-              <div className="text-center py-12 border rounded-lg bg-muted/20 text-muted-foreground">
-                <CheckCircle2 className="h-10 w-10 mx-auto mb-2 text-green-500/50" />
-                <p>No pending questions. You're all caught up!</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Moderation Guidelines</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-sm text-muted-foreground">
-              <p>
-                <strong>Academic Rigor:</strong> Please ensure answers meet the high academic standards of the American Society for Cybernetics.
-              </p>
-              <p>
-                <strong>Inappropriate Content:</strong> If a question is spam, trolling, or violates community guidelines, use the <span className="text-destructive font-medium">Reject</span> action. The user will be notified of the reason.
-              </p>
-              <p>
-                <strong>Publishing:</strong> Answered questions become visible on the public glossary for all members to learn from.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Needs Attention</CardTitle>
+          <CardDescription>
+            You have {mockQueue.length} items requiring review.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Type</TableHead>
+                <TableHead className="w-[400px]">Item</TableHead>
+                <TableHead>Submitted By</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {mockQueue.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell className="font-medium">
+                    <Badge variant={item.type === 'Report' ? 'destructive' : 'secondary'}>
+                      {item.type}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="font-medium text-zinc-900 dark:text-zinc-50">{item.title}</div>
+                    <div className="text-xs text-zinc-500">{item.id}</div>
+                  </TableCell>
+                  <TableCell>{item.author}</TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className="text-amber-600 bg-amber-50 dark:bg-amber-950/20 dark:text-amber-400">
+                      {item.status.replace('_', ' ')}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right space-x-2">
+                    <Button variant="outline" size="sm">Review</Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   )
 }

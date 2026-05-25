@@ -73,7 +73,7 @@ export default async function ModerationDashboard() {
           </CardHeader>
           <CardContent>
             {questions && questions.length > 0 ? (
-              <ModerationList questions={questions} />
+              <ModerationList questions={questions as any} />
             ) : (
               <div className="text-center py-12 border rounded-lg bg-muted/20 text-muted-foreground">
                 <CheckCircle2 className="h-10 w-10 mx-auto mb-2 text-green-500/50" />

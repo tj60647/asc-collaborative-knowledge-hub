@@ -31,11 +31,14 @@ export default function Home() {
             <a href="#scholarship" className="text-xs tracking-wide text-zinc-500 hover:text-zinc-950 transition-colors">
               Scholarship
             </a>
-            <Link href="/admin" className="text-xs tracking-wide text-zinc-500 hover:text-zinc-950 transition-colors">
+            <Link href="/calendar" className="text-xs tracking-wide text-zinc-500 hover:text-zinc-950 transition-colors">
+              Calendar
+            </Link>
+            <Link href="/profile" className="text-xs tracking-wide text-zinc-500 hover:text-zinc-950 transition-colors">
               Member Portal
             </Link>
             <Link
-              href="/admin/members/new"
+              href="/join"
               className="text-xs font-semibold tracking-wide bg-zinc-950 text-white hover:bg-zinc-800 px-4 py-2 transition-colors"
             >
               Join the ASC
@@ -59,7 +62,7 @@ export default function Home() {
 
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
-              href="/admin/members/new"
+              href="/join"
               className="inline-flex h-11 items-center justify-center gap-2 bg-zinc-950 px-6 font-medium text-xs text-white hover:bg-zinc-800 transition-colors shadow-sm"
             >
               Become a Member

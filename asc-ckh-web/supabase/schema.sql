@@ -1,4 +1,5 @@
 -- Initial Supabase Schema for Collaborative Knowledge Hub (CKH)
+CREATE EXTENSION IF NOT EXISTS vector;
 
 -- 1. Create Enums
 CREATE TYPE public.user_role AS ENUM ('member', 'moderator', 'manager', 'admin');
@@ -85,3 +86,58 @@ ALTER TABLE public.moderation_reports ENABLE ROW LEVEL SECURITY;
 -- (For MVP, we allow authenticated users to insert, but no SELECT policy is provided so standard users cannot read reports).
 CREATE POLICY "Users can submit reports" ON public.moderation_reports
   FOR INSERT WITH CHECK (auth.uid() = reporter_id);
+
+-- 8. Events Table (Phase 6: Native Calendar)
+CREATE TYPE public.event_status AS ENUM ('draft', 'published', 'cancelled');
+
+CREATE TABLE public.events (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title TEXT NOT NULL,
+  short_description TEXT,
+  long_description TEXT,
+  metadata JSONB DEFAULT '{}'::jsonb,
+  embedding vector(1536),
+  start_time TIMESTAMPTZ NOT NULL,
+  end_time TIMESTAMPTZ NOT NULL,
+  location TEXT,
+  url TEXT,
+  organizer_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+  status public.event_status DEFAULT 'draft'::public.event_status NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+);
+
+ALTER TABLE public.events ENABLE ROW LEVEL SECURITY;
+
+-- Events: Viewable if published
+CREATE POLICY "Events are viewable if published" ON public.events
+  FOR SELECT USING (status = 'published'::public.event_status);
+
+-- We assume inserts/updates are handled via the secure server-side admin portal,
+-- so we do not expose direct INSERT/UPDATE policies to regular users for events yet.
+
+-- 9. Semantic Search Functions
+CREATE OR REPLACE FUNCTION match_events(
+  query_embedding vector(1536),
+  match_threshold float,
+  match_count int
+)
+RETURNS TABLE (
+  id UUID,
+  title TEXT,
+  short_description TEXT,
+  similarity float
+)
+LANGUAGE sql STABLE
+AS $$
+  SELECT
+    events.id,
+    events.title,
+    events.short_description,
+    1 - (events.embedding <=> query_embedding) AS similarity
+  FROM public.events
+  WHERE status = 'published'::public.event_status
+    AND 1 - (events.embedding <=> query_embedding) > match_threshold
+  ORDER BY similarity DESC
+  LIMIT match_count;
+$$;

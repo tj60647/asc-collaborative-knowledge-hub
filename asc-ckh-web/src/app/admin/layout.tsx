@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Home } from 'lucide-react';
 
 export default function AdminLayout({
   children,
@@ -17,6 +18,14 @@ export default function AdminLayout({
           </Link>
           <div className="mt-8 flex flex-col gap-2">
             <Link
+              href="/"
+              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
+            >
+              <Home className="h-4 w-4" />
+              Back to Website
+            </Link>
+            <div className="my-2 border-t border-border/50"></div>
+            <Link
               href="/admin/treasury"
               className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
             >
@@ -27,6 +36,12 @@ export default function AdminLayout({
               className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
             >
               Member Management
+            </Link>
+            <Link
+              href="/admin/calendar"
+              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+            >
+              Calendar & Events
             </Link>
             <Link
               href="/admin/migration"

@@ -68,7 +68,9 @@ export default function JoinPage() {
       <div className="w-full max-w-2xl">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold tracking-tight">Join the Society</h1>
-          <p className="text-muted-foreground mt-2">Become a member of the American Society for Cybernetics.</p>
+          <p className="text-muted-foreground mt-4 max-w-xl mx-auto leading-relaxed">
+            Membership in the ASC connects you with an international community of researchers and practitioners exploring systems theory, design, and second-order cybernetics. Members gain full access to the Collaborative Knowledge Hub, discounted conference registration, and subscriptions to our affiliated journals.
+          </p>
         </div>
 
         <Card className="border-t-4 border-t-primary shadow-lg">

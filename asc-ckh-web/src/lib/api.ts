@@ -61,7 +61,7 @@ const saveLocalEvents = (events: any[]) => {
 
 export async function fetchEvents(statusFilter?: 'published' | 'draft') {
   if (!isMockMode) {
-    let query = supabase.from('events').select('*')
+    let query = supabase.from('community_events').select('*')
     if (statusFilter) query = query.eq('status', statusFilter)
     const { data, error } = await query
     if (error) throw error
@@ -76,15 +76,40 @@ export async function fetchEvents(statusFilter?: 'published' | 'draft') {
 }
 
 export async function createEvent(eventData: any) {
+  let embedding = null;
+
+  // 1. Generate the embedding via our secure backend route
+  try {
+    const embedRes = await fetch('/api/embed', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(eventData)
+    });
+    
+    if (embedRes.ok) {
+      const data = await embedRes.json();
+      embedding = data.embedding;
+      console.log(`Generated embedding vector of length: ${embedding?.length}`);
+    } else {
+      console.error("Failed to generate embedding", await embedRes.text());
+    }
+  } catch (err) {
+    console.error("Error calling /api/embed:", err);
+  }
+
+  // 2. Attach embedding to payload
+  const payload = { ...eventData, embedding };
+
+  // 3. Save to Database (or mock fallback)
   if (!isMockMode) {
-    const { data, error } = await supabase.from('events').insert([eventData]).select()
+    const { data, error } = await supabase.from('community_events').insert([payload]).select()
     if (error) throw error
     return data
   } else {
     // Mock Mode
     await new Promise(r => setTimeout(r, 600))
     const events = getLocalEvents()
-    const newEvent = { ...eventData, id: `evt-${Date.now()}` }
+    const newEvent = { ...payload, id: `evt-${Date.now()}` }
     saveLocalEvents([...events, newEvent])
     return [newEvent]
   }
@@ -92,7 +117,7 @@ export async function createEvent(eventData: any) {
 
 export async function updateEventStatus(id: string, newStatus: string) {
   if (!isMockMode) {
-    const { data, error } = await supabase.from('events').update({ status: newStatus }).eq('id', id).select()
+    const { data, error } = await supabase.from('community_events').update({ status: newStatus }).eq('id', id).select()
     if (error) throw error
     return data
   } else {

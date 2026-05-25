@@ -2,6 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { profileUpdateSchema } from '@/utils/validations'
 
 export async function updateProfile(formData: FormData) {
   const supabase = await createClient()
@@ -14,14 +15,25 @@ export async function updateProfile(formData: FormData) {
   }
 
   // Extract form data
-  const title_prefix = formData.get('title_prefix') as string
-  const first_name = formData.get('first_name') as string
-  const middle_initial = formData.get('middle_initial') as string
-  const last_name = formData.get('last_name') as string
-  const bio = formData.get('bio') as string
+  const rawData = {
+    title_prefix: formData.get('title_prefix') as string,
+    first_name: formData.get('first_name') as string,
+    middle_initial: formData.get('middle_initial') as string,
+    last_name: formData.get('last_name') as string,
+    bio: formData.get('bio') as string,
+  }
 
-  // Note: Discoverability opt-in isn't in our schema yet, but for now we just handle the text fields
-  
+  // Validate with Zod
+  const validatedFields = profileUpdateSchema.safeParse(rawData)
+
+  if (!validatedFields.success) {
+    // Return the first validation error message
+    const errorMessage = validatedFields.error.errors[0].message
+    return { error: `Validation Error: ${errorMessage}` }
+  }
+
+  const { title_prefix, first_name, middle_initial, last_name, bio } = validatedFields.data
+
   // Update the database
   const { error } = await supabase
     .from('user_profiles')
@@ -30,7 +42,7 @@ export async function updateProfile(formData: FormData) {
       first_name,
       middle_initial: middle_initial || null,
       last_name,
-      bio,
+      bio: bio || null,
       updated_at: new Date().toISOString(),
     })
     .eq('id', user.id)

@@ -15,6 +15,8 @@ CREATE TABLE public.profiles (
   bio TEXT,
   discoverability_opt_in BOOLEAN DEFAULT false NOT NULL, -- Strict privacy toggle
   stripe_customer_id TEXT UNIQUE,
+  stripe_subscription_id TEXT UNIQUE,
+  subscription_status TEXT DEFAULT 'inactive',
   created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
   updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );

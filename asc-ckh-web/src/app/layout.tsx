@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Navbar } from "@/components/navbar";
 import { Mountain } from "lucide-react";
 import Link from "next/link";
+import { headers } from "next/headers";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,37 +21,45 @@ export const metadata: Metadata = {
   description: "The digital ecosystem for the American Society for Cybernetics. Fostering collaborative research, cybernetic education, and systemic knowledge curation.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") ?? headersList.get("x-invoke-path") ?? "";
+
+  // Pages that supply their own chrome (nav + footer)
+  const isSelfContained = pathname === "/" || pathname.startsWith("/auth");
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <Navbar />
+        {!isSelfContained && <Navbar />}
         <main className="flex-1 flex flex-col">
           {children}
         </main>
         
-        {/* Constant Footer with consistent width */}
-        <footer className="w-full border-t bg-background">
-          <div className="w-full max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center space-x-2 mb-4 md:mb-0">
-              <Mountain className="h-5 w-5 text-zinc-900 dark:text-zinc-50" />
-              <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">ASC CKH</span>
+        {/* Constant Footer — hidden on self-contained pages */}
+        {!isSelfContained && (
+          <footer className="w-full border-t bg-background">
+            <div className="w-full max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between">
+              <div className="flex items-center space-x-2 mb-4 md:mb-0">
+                <Mountain className="h-5 w-5 text-zinc-900 dark:text-zinc-50" />
+                <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">ASC CKH</span>
+              </div>
+              
+              <nav aria-label="Footer navigation" className="flex items-center space-x-6 text-sm font-medium">
+                <Link href="/about" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors">
+                  About
+                </Link>
+              </nav>
             </div>
-            
-            <nav aria-label="Footer navigation" className="flex items-center space-x-6 text-sm font-medium">
-              <Link href="/about" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors">
-                About
-              </Link>
-            </nav>
-          </div>
-        </footer>
+          </footer>
+        )}
       </body>
     </html>
   );

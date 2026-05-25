@@ -59,12 +59,12 @@ export default function MemberDirectoryPage() {
       {matches.length > 0 && (
         <section>
           <div className="flex items-center gap-2 mb-4">
-            <Sparkles className="h-5 w-5 text-purple-500" />
+            <Sparkles className="h-5 w-5 text-zinc-400" />
             <h2 className="text-xl font-semibold">Suggested Peers (Similarity Matches)</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {matches.map(member => (
-              <Card key={member.id} className="border-purple-200 bg-purple-50/10 shadow-sm flex flex-col">
+              <Card key={member.id} className="border-zinc-200 bg-zinc-50/50 dark:bg-zinc-900/20 shadow-sm flex flex-col">
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
                     <div>
@@ -74,7 +74,7 @@ export default function MemberDirectoryPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="pb-3 flex-1">
-                  <div className="text-sm font-medium text-purple-800 bg-purple-100/50 p-2 rounded-md mb-3">
+                  <div className="text-sm font-medium text-zinc-700 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 p-2 rounded-md mb-3">
                     <strong>Match Reason:</strong> You both list interests in <em>{member.matchReason}</em>.
                   </div>
                   <div className="flex flex-wrap gap-1">
@@ -88,7 +88,7 @@ export default function MemberDirectoryPage() {
                 <CardFooter className="pt-0">
                   <Button 
                     variant="default" 
-                    className="w-full bg-purple-600 hover:bg-purple-700"
+                    className="w-full"
                     onClick={() => handleSuggestCollaboration(member)}
                   >
                     <Mail className="mr-2 h-4 w-4" /> Suggest Collaboration

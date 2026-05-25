@@ -21,8 +21,8 @@ export async function Navbar() {
             </span>
           </Link>
           <div className="hidden md:flex flex-1 items-center space-x-6 text-sm font-medium">
-            <Link href="/events" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors">
-              Events
+            <Link href="/calendar" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors">
+              Calendar
             </Link>
             <Link href="/directory" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors">
               Directory

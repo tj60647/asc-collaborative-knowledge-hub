@@ -60,8 +60,11 @@ const organizations = [
 ]
 
 export default function OrganizationsPage() {
+  const active = organizations.filter((o) => o.active)
+  const archived = organizations.filter((o) => !o.active)
+
   return (
-    <div className="w-full max-w-5xl mx-auto px-6 py-12">
+    <div className="w-full max-w-7xl mx-auto px-6 py-12">
       <div className="mb-10">
         <h1 className="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
           Affiliated Organizations
@@ -71,53 +74,78 @@ export default function OrganizationsPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {organizations.map((org) => (
-          <Card key={org.name} className="flex flex-col">
-            <CardHeader>
-              <div className="flex items-start justify-between gap-4">
-                <CardTitle className="text-xl leading-tight text-zinc-900">
-                  {org.name}
-                </CardTitle>
-                {org.active ? (
+      {/* Active Organizations */}
+      <div>
+        <h2 className="text-lg font-semibold text-zinc-700 dark:text-zinc-300 mb-4">Active Organizations</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {active.map((org) => (
+            <Card key={org.name} className="flex flex-col">
+              <CardHeader>
+                <div className="flex items-start justify-between gap-4">
+                  <CardTitle className="text-xl leading-tight text-zinc-900 dark:text-zinc-50">
+                    {org.name}
+                  </CardTitle>
                   <Link
                     href={org.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="shrink-0 p-2 text-zinc-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors"
+                    className="shrink-0 p-2 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-full transition-colors"
                     title={`Visit ${org.name}`}
                   >
                     <ExternalLink className="h-5 w-5" />
                   </Link>
-                ) : (
+                </div>
+                <CardDescription className="flex items-center gap-2 mt-2 font-mono text-xs">
+                  <span className="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                    Active Link
+                  </span>
+                  <span className="text-zinc-400 truncate">{org.url}</span>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1">
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                  {org.description}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      {/* Historical Archive */}
+      <div>
+        <h2 className="text-lg font-semibold text-zinc-500 dark:text-zinc-400 mb-1">Historical Archive</h2>
+        <p className="text-sm text-zinc-400 mb-4">These organizations are no longer reachable at their listed URLs but are preserved for historical reference.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {archived.map((org) => (
+            <Card key={org.name} className="flex flex-col opacity-70">
+              <CardHeader>
+                <div className="flex items-start justify-between gap-4">
+                  <CardTitle className="text-xl leading-tight text-zinc-900 dark:text-zinc-50">
+                    {org.name}
+                  </CardTitle>
                   <div
                     className="shrink-0 p-2 text-amber-500 rounded-full"
                     title="This link is currently inactive or unreachable."
                   >
                     <AlertTriangle className="h-5 w-5" />
                   </div>
-                )}
-              </div>
-              <CardDescription className="flex items-center gap-2 mt-2 font-mono text-xs">
-                {org.active ? (
-                  <span className="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                    Active Link
-                  </span>
-                ) : (
+                </div>
+                <CardDescription className="flex items-center gap-2 mt-2 font-mono text-xs">
                   <span className="text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
                     Archived Link
                   </span>
-                )}
-                <span className="text-zinc-400 truncate">{org.url}</span>
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex-1">
-              <p className="text-sm text-zinc-600 leading-relaxed">
-                {org.description}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
+                  <span className="text-zinc-400 truncate">{org.url}</span>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1">
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                  {org.description}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   )

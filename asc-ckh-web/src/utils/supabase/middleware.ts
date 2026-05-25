@@ -66,9 +66,14 @@ export async function updateSession(request: NextRequest) {
                            request.nextUrl.pathname.startsWith('/calendar/request')
 
   if (isProtectedRoute && !user) {
-    // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
     url.pathname = '/auth/login'
+    // Preserve the originally requested path so we can redirect back after login
+    url.searchParams.set('redirect', request.nextUrl.pathname)
+    // Surface a contextual message so users understand why they landed here
+    if (request.nextUrl.pathname.startsWith('/admin')) {
+      url.searchParams.set('message', 'Please sign in to access the Admin Portal.')
+    }
     return NextResponse.redirect(url)
   }
 

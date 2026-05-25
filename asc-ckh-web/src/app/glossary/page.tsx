@@ -54,7 +54,7 @@ export default async function GlossaryPage() {
       </div>
 
       {terms && terms.length > 0 ? (
-        <GlossaryList initialTerms={terms} />
+        <GlossaryList initialTerms={terms as any} />
       ) : (
         <div className="text-center p-12 border rounded-lg bg-muted/20">
           <p className="text-muted-foreground">No published glossary terms found.</p>

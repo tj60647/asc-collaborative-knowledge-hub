@@ -28,7 +28,7 @@ export async function updateProfile(formData: FormData) {
 
   if (!validatedFields.success) {
     // Return the first validation error message
-    const errorMessage = validatedFields.error.errors[0].message
+    const errorMessage = validatedFields.error.issues[0].message
     return { error: `Validation Error: ${errorMessage}` }
   }
 

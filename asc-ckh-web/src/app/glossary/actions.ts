@@ -23,7 +23,7 @@ export async function submitQuestion(formData: FormData) {
   const validatedFields = questionSchema.safeParse(rawData)
 
   if (!validatedFields.success) {
-    const errorMessage = validatedFields.error.errors[0].message
+    const errorMessage = validatedFields.error.issues[0].message
     return { error: `Validation Error: ${errorMessage}` }
   }
 

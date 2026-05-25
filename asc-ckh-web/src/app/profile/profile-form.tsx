@@ -41,8 +41,8 @@ export function ProfileForm({ initialData }: { initialData: ProfileData }) {
     setProfile(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSelectChange = (value: string) => {
-    setProfile(prev => ({ ...prev, title_prefix: value }))
+  const handleSelectChange = (value: string | null) => {
+    setProfile(prev => ({ ...prev, title_prefix: value || "none" }))
   }
 
   const handleToggleDiscoverability = (checked: boolean) => {
